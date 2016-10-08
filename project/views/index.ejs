@@ -50,9 +50,9 @@
 			<div class="row">
         	    <div class="col-md-3 col-sm-8 col-xs-12">
 					<div class="input-group">	
-						<input type="text" class="form-control" placeholder="式神全名">
+						<input type="text" class="form-control" placeholder="式神全名" id="positionName" onkeydown="bindEnter();">
 						<span class="input-group-btn">
-							<button class="btn btn-primary" type="button" id="positionBtn">确认</button>
+							<button class="btn btn-primary" type="button" id="positionBtn" onclick="sendMsg();">确认</button>
 						</span>
 					</div>
 				</div>
@@ -92,7 +92,25 @@
 </div>
 
 <script type="text/javascript">
-	
+	function bindEnter(){
+		if(window.event.keyCode == 13)
+			sendMsg();
+	}
+
+	function sendMsg(){
+		var name = $("#positionName").val();
+		$.ajax({
+			url:"/request/position",
+			type:"post",
+			data:{name:name},
+			success:function(result){
+				$("#positionName").val("");	
+			},
+			error:function(data,status){
+				alert("None")	
+			}
+		});
+	}
 </script>
 
 <% include footer.ejs %>
