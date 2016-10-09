@@ -1,11 +1,12 @@
 <% include header.ejs %>
 <div id="wrapper">
+	<!-- top-navbar -->
     <nav class="navbar navbar-default top-navbar" role="navigation">
         <div class="navbar-header">
             <a class="navbar-brand" href="/"><i class="fa fa-comments"></i> <strong>Cyua's tools</strong></a>
         </div>
+		<!-- 
         <ul class="nav navbar-top-links navbar-right">
-            <!-- /.dropdown -->
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
                     <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
@@ -17,10 +18,9 @@
                     <li><a href="#"><i class="fa fa-sign-out fa-fw"></i>尚在开发中</a>
                     </li>
                 </ul>
-                <!-- /.dropdown-user -->
             </li>
-            <!-- /.dropdown -->
         </ul>
+		-->
     </nav>
     <!--/. NAV TOP  -->
     <nav class="navbar-default navbar-side" role="navigation">
@@ -50,7 +50,7 @@
 			<div class="row">
         	    <div class="col-md-3 col-sm-8 col-xs-12">
 					<div class="input-group">	
-						<input type="text" class="form-control" placeholder="式神全名" id="positionName" onkeydown="bindEnter();">
+						<input type="text" class="form-control" placeholder="式神全名或拼音 (例: 酒吞童子/ jiutuntongzi)" id="positionName" onkeydown="bindEnter();">
 						<span class="input-group-btn">
 							<button class="btn btn-primary" type="button" id="positionBtn" onclick="sendMsg();">确认</button>
 						</span>
@@ -74,11 +74,11 @@
         	                                <th>备注</th>
         	                            </tr>
         	                        </thead>
-        	                        <tbody>
+        	                        <tbody id="tbl">
         	                            <tr>
         	                                <td>茨木童子</td>
         	                                <td>梦里</td>
-        	                                <td>None</td>
+        	                                <td>孩子醒醒茨木不会有的</td>
         	                            </tr>
         	                        </tbody>
         	                    </table>
@@ -105,9 +105,17 @@
 			data:{name:name},
 			success:function(result){
 				$("#positionName").val("");	
+				var text = "";
+				for(var i = 0; i < result.position.length; i++){
+					text += "<tr><td>" + result.name + "</td>";
+					text += "<td>" + result.position[i] + "</td><td>暂无</td></tr>";
+				}
+				$("#tbl").html(text);
 			},
 			error:function(data,status){
-				alert(status)	
+				var text = "";
+				text += "<tr><td colspan=3>没有该式神数据喔 （//▽//）请先检查拼写啦！要是没错的话...那就说明常规章节和御魂七层以内木有这个式神出现 _(:з」∠)_</td></tr>"
+				$("#tbl").html(text);
 			}
 		});
 	}

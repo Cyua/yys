@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 router.post('/position', function(req, res){
+	return;
 	var name = req.body.name;
 	var pinyin = req.body.pinyin;
 	var pos = req.body.position;

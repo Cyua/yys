@@ -36,6 +36,7 @@ router.post('/request/position', function(req, res){
 				}
 			});
 		}else{
+			sendData.name = doc.name;
 			for(var i = 0; i < doc.position.length; i++){
 				sendData.position.push(doc.position[i]);
 			}
