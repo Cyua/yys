@@ -23,10 +23,10 @@ router.post('/position', function(req, res){
 
 
 router.post('/clue', function(req, res){
-	var name = req.body.name;
+	var pinyin = req.body.pinyin;
 	var clue = req.body.clue;
 	var Shikigami = global.dbHandle.getModel('shikigamis');
-	Shikigami.findOne({'name':name}, function(err, doc){
+	Shikigami.findOne({'pinyin':pinyin}, function(err, doc){
 		if(err){
 			console.log(err);
 			res.sendStatus(500);
