@@ -5,5 +5,8 @@ module.exports={
 		position: 	[
 			String
 		],
+		clue: 		[
+			String
+		],
 	},
 };
