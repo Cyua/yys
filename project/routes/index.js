@@ -23,7 +23,7 @@ router.post('/request/position', function(req, res){
 				if(err){
 					console.log("inner: "+err);
 					res.sendStatus(500);
-				}else if(!doc){
+				}else if(!doc){			//根据名字和拼音都没有找到，当作线索来处理
 					console.log("Failed request name: " + rawName);
 					res.sendStatus(404);
 				}else{
