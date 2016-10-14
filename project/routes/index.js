@@ -3,9 +3,12 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Cyua' });
+	res.render('index', { title: 'Cyua' });
 });
 
+routers.get('/ouch', function(req, res){
+	res.render('ouch');
+});
 
 router.post('/request/position', function(req, res){
 	var rawName = req.body.name;
