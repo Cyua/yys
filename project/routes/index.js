@@ -6,9 +6,9 @@ router.get('/', function(req, res, next) {
 	res.render('index', { title: 'Cyua' });
 });
 
-router.get('/ouch', function(req, res, next){
-	res.render('ouch', {title:'ouch'});
-});
+//router.get('/ouch', function(req, res, next){
+//	res.render('ouch', {title:'ouch'});
+//});
 
 router.post('/request/position', function(req, res){
 	var rawName = req.body.name;
@@ -36,6 +36,59 @@ router.post('/request/position', function(req, res){
 					}
 					res.writeHead(200, {'Content-Type': 'application/json'});
 					res.end(JSON.stringify(sendData));
+				}
+			});
+		}else{
+			sendData.name = doc.name;
+			for(var i = 0; i < doc.position.length; i++){
+				sendData.position.push(doc.position[i]);
+			}
+			res.writeHead(200, {'Content-Type': 'application/json'});
+			res.end(JSON.stringify(sendData));
+		}
+	});
+});
+
+
+router.post('/request/position2', function(req, res){
+	var rawName = req.body.name;
+	var Shikigami = global.dbHandle.getModel("shikigamis");
+	var Mohus = global.dbHandle.getModel("mohus");
+	var sendData = {
+		"name": null,
+		"position":[]
+	};
+	Shikigami.findOne({name: rawName}, function(err, doc){
+		if(err){
+			console.log("outer: " + err);
+			res.sendStatus(500);
+		}else if(!doc){
+			Mohus.findOne({name: rawName}, function(err, doc1){		//找模糊词和拼音
+				if(err){
+					console.log("inner: " + err);
+					res.sendStatus(500);
+				}else if(!doc1){
+					console.log("[DEBUG]failed name: " + rawName);
+					res.sendStatus(404);
+				}else{
+					realname = doc1.real;	
+					Shikigami.findOne({name: realname}, function(err, doc2){
+						if(err){
+							console.log("inner: " + err);
+							res.sendStatus(500);
+						}else if(!doc2){
+							console.log("[ERROR] failed name unbelievable: " + rawName);
+							res.sendStatus(404);
+						}else{
+							sendData.name = doc2.name;
+							for(var i = 0; i < doc2.position.length; i++){
+								sendData.position.push(doc2.position[i]);	
+							}
+							console.log("[DEBUG] mohu name: "+doc1.name);
+							res.writeHead(200, {'Content-Type': 'application/json'});
+							res.end(JSON.stringify(sendData));
+						}
+					});
 				}
 			});
 		}else{

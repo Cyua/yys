@@ -50,6 +50,7 @@ router.post('/clue', function(req, res){
 
 
 router.post('/mohu', function(req, res){
+	return;
 	var fake = req.body.fake;
 	var real = req.body.real;
 	var Mohus = global.dbHandle.getModel('mohus');
