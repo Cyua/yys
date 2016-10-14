@@ -6,8 +6,8 @@ router.get('/', function(req, res, next) {
 	res.render('index', { title: 'Cyua' });
 });
 
-routers.get('/ouch', function(req, res){
-	res.render('ouch');
+router.get('/ouch', function(req, res, next){
+	res.render('ouch', {title:'ouch'});
 });
 
 router.post('/request/position', function(req, res){
