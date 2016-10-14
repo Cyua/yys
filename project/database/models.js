@@ -9,4 +9,8 @@ module.exports={
 			String
 		],
 	},
+	mohus:{
+		name: 		String,
+		real:   	String,
+	},
 };

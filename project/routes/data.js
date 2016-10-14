@@ -48,4 +48,23 @@ router.post('/clue', function(req, res){
 	});
 });
 
+
+router.post('/mohu', function(req, res){
+	var fake = req.body.fake;
+	var real = req.body.real;
+	var Mohus = global.dbHandle.getModel('mohus');
+	var units = new Mohus({
+		"name":fake,
+		"real":real,
+	});
+	units.save(function(err){
+		if(err){
+			console.log(err);
+			res.sendStatus(500);
+		}else{
+			res.sendStatus(200);
+		}
+	});
+});
+
 module.exports = router;
