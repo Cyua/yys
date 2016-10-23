@@ -105,10 +105,12 @@
 			success:function(result){
 				$("#positionName").val("");	
 				var text = "";
-				for(var i = 0; i < result.position.length; i++){
-					var posList = result.position[i].split(" ");
-					text += "<tr><td>" + result.name + "</td>";
-					text += "<td>" + posList[0] + "</td><td>" + posList[1] + "</td></tr>";
+				for(var j = 0 ; j < result.length; j++){
+					for(var i = 0; i < result[j].position.length; i++){
+						var posList = result[j].position[i].split(" ");
+						text += "<tr><td>" + result[j].name + "</td>";
+						text += "<td>" + posList[0] + "</td><td>" + posList[1] + "</td></tr>";
+					}
 				}
 				$("#tbl").html(text);
 			},

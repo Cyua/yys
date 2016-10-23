@@ -50,10 +50,11 @@ router.post('/clue', function(req, res){
 
 
 router.post('/mohu', function(req, res){
+	return;
 	var fake = req.body.fake;
 	var real = req.body.real;
 	var Mohus = global.dbHandle.getModel('mohus');
-	Mohus.find({name: fake}, function(err, doc){
+	Mohus.findOne({name: fake}, function(err, doc){
 		if(err){
 			console.log(err);
 			res.sendStatus(500);
@@ -71,6 +72,7 @@ router.post('/mohu', function(req, res){
 				}
 			});
 		} else {
+			console.log("name: "+fake);
 			doc.real.push(real);
 			doc.save(function(err){
 				if(err){
