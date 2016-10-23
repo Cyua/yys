@@ -71,24 +71,48 @@ router.post('/request/position2', function(req, res){
 					console.log("[DEBUG]failed name: " + rawName);
 					res.sendStatus(404);
 				}else{
-					realname = doc1.real;	
-					Shikigami.findOne({name: realname}, function(err, doc2){
-						if(err){
-							console.log("inner: " + err);
-							res.sendStatus(500);
-						}else if(!doc2){
-							console.log("[ERROR] failed name unbelievable: " + rawName);
-							res.sendStatus(404);
-						}else{
-							sendData.name = doc2.name;
-							for(var i = 0; i < doc2.position.length; i++){
-								sendData.position.push(doc2.position[i]);	
+					var realnameList = doc1.real;
+					if(realnameList.length == 1){		//模糊名对应的只有一个式神
+						var realname = realnameList[0];
+						Shikigami.findOne({name: realname}, function(err, doc2){
+							if(err){
+								console.log("inner: " + err);
+								res.sendStatus(500);
+							}else if(!doc2){
+								console.log("[ERROR] failed name unbelievable: " + rawName);
+								res.sendStatus(404);
+							}else{
+								sendData.name = doc2.name;
+								for(var i = 0; i < doc2.position.length; i++){
+									sendData.position.push(doc2.position[i]);	
+								}
+								res.writeHead(200, {'Content-Type': 'application/json'});
+								res.end(JSON.stringify(sendData));
 							}
-							console.log("[DEBUG] mohu name: "+doc1.name);
-							res.writeHead(200, {'Content-Type': 'application/json'});
-							res.end(JSON.stringify(sendData));
-						}
-					});
+						});
+					}else{
+						Shikigami.find({name:{$in:realnameList}}, function(err, doc2){
+							if(err){
+								console.log("inner: "+err);
+								res.sendStatus(500);
+							}else if(!doc2){
+								console.log("[ERROR] failed name unbelievable: " + rawName);
+								res.sendStatus(404);
+							}else{
+								var sendDatas = []
+								for(var i = 0; i < doc2.length; i++){
+									sendData.name = doc2[i].name;
+									sendData.position = [];
+									for(var j = 0; j < doc2[i].position.length; j++){
+										sendData.position.push(doc2[i].position[j]);
+									}
+									sendDatas.push(sendData);
+								}
+								res.writeHead(200, {'Content-Type': 'application/json'});
+								res.end(JSON.stringify(sendDatas));
+							}
+						});
+					}	
 				}
 			});
 		}else{

@@ -50,20 +50,36 @@ router.post('/clue', function(req, res){
 
 
 router.post('/mohu', function(req, res){
-	return;
 	var fake = req.body.fake;
 	var real = req.body.real;
 	var Mohus = global.dbHandle.getModel('mohus');
-	var units = new Mohus({
-		"name":fake,
-		"real":real,
-	});
-	units.save(function(err){
+	Mohus.find({name: fake}, function(err, doc){
 		if(err){
 			console.log(err);
 			res.sendStatus(500);
-		}else{
-			res.sendStatus(200);
+		} else if(!doc){
+			var units = new Mohus({
+				"name":fake,
+				"real":[real],
+			});
+			units.save(function(err){
+				if(err){
+					console.log(err);
+					res.sendStatus(500);
+				}else{
+					res.sendStatus(200);
+				}
+			});
+		} else {
+			doc.real.push(real);
+			doc.save(function(err){
+				if(err){
+					console.log(err);
+					res.sendStatus(500);
+				}else{
+					res.sendStatus(200);	
+				}
+			});
 		}
 	});
 });

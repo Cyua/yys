@@ -11,6 +11,8 @@ module.exports={
 	},
 	mohus:{
 		name: 		String,
-		real:   	String,
+		real:   	[
+			String		
+		],
 	},
 };
