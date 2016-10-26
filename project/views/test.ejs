@@ -47,7 +47,7 @@
                 </div>
             </div>
 			<div class="row">
-        	    <div class="col-md-3 col-sm-8 col-xs-12">
+        	    <div class="col-md-4 col-sm-8 col-xs-12">
 					<div class="input-group">	
 						<input type="text" class="form-control" placeholder="式神全名或拼音 (例: 酒吞童子/ jiutuntongzi)" id="positionName" onkeydown="bindEnter();">
 						<span class="input-group-btn">
@@ -105,17 +105,19 @@
 			success:function(result){
 				$("#positionName").val("");	
 				var text = "";
-				for(var i = 0; i < result.position.length; i++){
-					var posList = result.position[i].split(" ");
-					text += "<tr><td>" + result.name + "</td>";
-					text += "<td>" + posList[0] + "</td><td>" + posList[1] + "</td></tr>";
+				for(var j = 0 ; j < result.length; j++){
+					for(var i = 0; i < result[j].position.length; i++){
+						var posList = result[j].position[i].split(" ");
+						text += "<tr><td>" + result[j].name + "</td>";
+						text += "<td>" + posList[0] + "</td><td>" + posList[1] + "</td></tr>";
+					}
 				}
 				$("#tbl").html(text);
 			},
 			error:function(data,status){
 				$("#positionName").val("");	
 				var text = "";
-				text += "<tr><td colspan=3>没有该式神数据喔 （//▽//）请先检查拼写啦！要是没错的话...那就说明常规章节和御魂八层以内木有这个式神出现 _(:з」∠)_</td></tr>"
+				text += "<tr><td colspan=3>没有该式神数据喔 （//▽//）请先检查拼写啦！要是没错的话， 就说明常规章节和御魂八层以内木有这个式神出现 _(:з」∠)_</td></tr>"
 				$("#tbl").html(text);
 			}
 		});
